@@ -1,20 +1,49 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class PublicationService {
-  deletePublication() {
-    throw new Error('Method not implemented.');
+  constructor(private prisma: PrismaService) {}
+
+  deletePublication(id: number) {
+    return this.prisma.post.delete({
+      where: {
+        id
+      }
+    })
   }
-  updatePublication() {
-    throw new Error('Method not implemented.');
+  updatePublication(id: number, data: any) {
+    const {mediaId, postId, date} = data;
+    return this.prisma.publication.update({
+      where: {
+        id
+      },
+      data: {
+        mediaId, 
+        postId, 
+        date
+      }
+    })
   }
-  getPublicationById() {
-    throw new Error('Method not implemented.');
+  getPublicationById(id: number) {
+    return this.prisma.publication.findUnique({
+      where: {
+        id
+      }
+    })
   }
   getPublications() {
-    throw new Error('Method not implemented.');
+    return this.prisma.publication.findMany();
   }
-  createPublication() {
-    throw new Error('Method not implemented.');
+  createPublication(data: any) {
+    const {mediaId, postId, date } = data;
+    
+    return this.prisma.publication.create({
+      data: {
+        mediaId,
+        postId,
+        date
+      }
+    })
   }
 }

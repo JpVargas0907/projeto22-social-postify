@@ -1,20 +1,48 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class MediasService {
-  deleteMedia() {
-    throw new Error('Method not implemented.');
+  constructor(private prisma: PrismaService) {}
+
+  deleteMedia(id: number) {
+    return this.prisma.media.delete({
+      where: {
+        id
+      }
+    })
   }
-  updateMedia() {
-    throw new Error('Method not implemented.');
+  updateMedia(id: number, data : any) {
+    const {title, username} = data;
+    return this.prisma.media.update({
+      where: {
+        id
+      },
+      data: {
+        title, 
+        username
+      }
+    })
   }
-  getMediaById() {
-    throw new Error('Method not implemented.');
+  getMediaById(id: number) {
+    return this.prisma.media.findUnique({
+      where: {
+        id 
+      }
+    })
   }
   getMedias() {
-    throw new Error('Method not implemented.');
+    return this.prisma.media.findMany();
   }
-  createMedia() {
-    throw new Error('Method not implemented.');
+  createMedia(data: any) {
+    const { title, username } = data;
+
+    return this.prisma.media.create({
+      data: {
+        title,
+        username
+      }
+    })
   }
 }
